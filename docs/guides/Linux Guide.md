@@ -1,16 +1,14 @@
 ##Setting up NadekoBot on Linux
 
 ####Setting up NadekoBot on Linux Digital Ocean Droplet
-If you want Nadeko to play music for you 24/7 without having to hosting it on your PC and want to keep it cheap, reliable and convenient as possible, you can try Nadeko on Linux Digital Ocean Droplet using the link [DigitalOcean][DigitalOcean] (and using this link will be supporting Nadeko and will give you **$10 credit**)
-
-Keep this helpful video handy [Linux Setup Video][Linux Setup Video] (thanks to klincheR) it contains how to set up the Digital Ocean droplet aswell.
+If you want Nadeko to play music for you 24/7 without having to hosting it on your PC and want to keep it cheap, reliable and convenient as possible, you can try Nadeko on Linux Digital Ocean Droplet using the link [DigitalOcean](http://m.do.co/c/46b4d3d44795/) (and using this link will be supporting Nadeko and will give you **$10 credit**)
 
 ####Setting up NadekoBot
 Assuming you have followed the link above to created an account in Digital Ocean and video to set up the bot until you get the `IP address and root password (in email)` to login, its time to begin.
 
 #### Prerequisites
-- Download [PuTTY][PuTTY]
-- Download [CyberDuck][CyberDuck]
+- Download [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
+- Download [CyberDuck](https://cyberduck.io)
 
 #### Follow these steps
 
@@ -24,73 +22,52 @@ If you entered your Droplets IP address correctly, it should show **login as:** 
 
 **Copy and just paste** using **mouse right-click** (it should paste automatically)
 
-####Installing Mono
-MONO (Source: [Mono Source][Mono Source])
-
+####Installing git
 **1)**
-
-`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF`
-`echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list`
-`sudo apt-get update`
+`sudo apt-get install git -y`
 
 Note if the command is not being initiated, hit **Enter**
 
+####Installing dotnet
+Go to [this link](https://www.microsoft.com/net/core#ubuntu) provided by microsoft for instructions on how to get the most up to date version of the dotnet core sdk - make sure that you're on the correct page for your distribution of linux!  
+We'll go over the steps here for ubuntu 16.04 anyway, one of the more common distributions of linux, accurate as of 16/10/2016
+
 **2)**
+```
+sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ xenial main" > /etc/apt/sources.list.d/dotnetdev.list'
 
-`echo "deb http://download.mono-project.com/repo/debian wheezy-apache24-compat main" | sudo 
-tee -a /etc/apt/sources.list.d/mono-xamarin.list`
+sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
 
-####Mono on Debian 8 and later
-**2.5)**
+sudo apt-get update
 
-`echo "deb http://download.mono-project.com/repo/debian wheezy-libjpeg62-compat main" | sudo 
-tee -a /etc/apt/sources.list.d/mono-xamarin.list`
-
-####Mono on CentOS 7, Fedora 19 (and later) and later
-**2.6)**
-
-`yum install yum-util`
-`rpm --import "http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF"`
-`yum-config-manager --add-repo http://download.mono-project.com/repo/centos/`
-
-####Mono Devel
-**3)**
-
-`apt-get install mono-devel`
-
-**Type** `y` **hit Enter**
-
-####Mono Fix
-**In case you are having issues with Mono where you get a random string and the bot won't run, do this:**
-
-`sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF`
-`echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list`
-`apt-get install ca-certificates-mono`
-`mozroots --import --sync`
+sudo apt-get install dotnet-dev-1.0.0-preview2-003131 -y
+```
 
 ####Installing Opus Voice Codec
+**3)**
+`sudo apt-get install libopus0 opus-tools -y`
+
 **4)**
-`sudo apt-get install libopus0 opus-tools`
+`sudo apt-get install libopus-dev -y`
 
-**Type** `y` **hit Enter**
-
+####Installing libsodium
 **5)**
-`sudo apt-get install libopus-dev`
+`sudo apt-get install libsodium-dev -y`
 
 ####FFMPEG
 
 **6)**
-`apt-get install ffmpeg`
+`apt-get install ffmpeg -y`
 
-**Type** `y` **hit Enter**
+NOTE: if its "not installing" then, follow the guide here: [FFMPEG Help Guide](http://www.faqforge.com/linux/how-to-install-ffmpeg-on-ubuntu-14-04/)
 
-NOTE: if its "not installing" then, follow the guide here: [FFMPEG Help Guide][FFMPEG Help Guide]
+**If you are running UBUNTU 14.04, you must run these first:**
 
-**All you need to do, if you are running UBUNTU 14.04 is initiate these:**
-
-`sudo add-apt-repository ppa:mc3man/trusty-media`
-`sudo apt-get update`
-`sudo apt-get dist-upgrade`
+```
+sudo add-apt-repository ppa:mc3man/trusty-media
+sudo apt-get update
+sudo apt-get dist-upgrade
+```
 
 *Before executing* `sudo apt-get install ffmpeg`
 
@@ -100,10 +77,11 @@ NOTE: if its "not installing" then, follow the guide here: [FFMPEG Help Guide][F
 
 In case you are not able to install it with installer ^up there, follow these steps:
 
-`sudo apt-get update`
-`echo "deb http://ftp.debian.org/debian jessie-backports main" | tee /etc/apt/sources.list.d/debian-backports.list`
-`sudo apt-get update`
-`sudo  apt-get install ffmpeg -y`
+```
+sudo apt-get update
+echo "deb http://ftp.debian.org/debian jessie-backports main" | tee /etc/apt/sources.list.d/debian-backports.list
+sudo apt-get update && sudo apt-get install ffmpeg -y`
+```
 
 ####Uncomplicated Firewall UFW
 
@@ -123,56 +101,40 @@ In case you are not able to install it with installer ^up there, follow these st
 **10)**
 `sudo ufw allow ssh`
 
-####Installing Unzip
-**11)**
-`apt-get install unzip`
-
 ####Installing TMUX
+**11)**
+`apt-get install tmux -y`
+
+####Getting NadekoBot
+
 **12)**
-`apt-get install tmux`
+`git clone -b 1.0 --recursive https://github.com/Kwoth/NadekoBot.git
 
-**Type** `y` **hit Enter**
-
-####Importing Discord certs
+####Building NadekoBot
 **13)**
-`certmgr -ssl https://discordapp.com`
+`cd /NadekoBot/discord.net/src/Discord.Net`
+
+`dotnet restore && dotnet build --configuration Release`
+
 **14)**
-`certmgr -ssl https://gateway.discord.gg`
+`cd ../Discord.Net.Commands/`
 
-Type `yes` and hit Enter **(three times - as it will ask for three times)**
+`dotnet restore && dotnet build --configuration Release`
 
-####Creating Nadeko folder
 **15)**
-Create a new folder “nadeko” or anything you prefer
+`cd ../../../src/NadekoBot/`
 
-`mkdir nadeko`
+`dotnet restore && dotnet build --configuration Release`
 
 **16)**
-Move to “nadeko” folder (note `cd --` to go back the directory)
-
-`cd nadeko`
-
-####Getting NadekoBot from Releases
-
-Go to this link: [Releases][Releases] and **copy the zip file address** of the lalest version available,
-it should look like `https://github.com/Kwoth/NadekoBot/releases/download/vx.xx/NadekoBot.vx.x.zip`
-
-**17)**
-Get the correct link, type `wget`, then *paste the link*, then hit **Enter**.
-
-`wget https://github.com/Kwoth/NadekoBot/releases/download/vx.xx/NadekoBot.vx.x.zip`
-
-**^Do not copy-paste it**
-
-**18)**
-Now we need to `unzip` the downloaded zip file and to do that, type the file name as it showed in your screen or just copy from the screen, should be like ` NadekoBot.vx.x.zip`
-
-`unzip NadekoBot.vx.x.zip`
-
-**^Do not copy-paste it**
+`sudo cp ./bin/Release/netcoreapp1.0/libs/* ./bin/Release/netcoreapp1.0/data/`
 
 ####Setting up NadekoBot
 
+**17)**
+`dotnet run --configuration Release`
+
+This will generate a copy of `credentials_example.json` to be used below 
 - Open **CyberDuck**
 - Click on **Open Connection** (top-left corner), a new window should appear.
 - You should see **FTP (File Transfer Protocol)** in drop-down.
@@ -181,17 +143,17 @@ Now we need to `unzip` the downloaded zip file and to do that, type the file nam
 - In **Username:** type `root`
 - In **Password:** type `the new root password (you changed at the start)`
 - Click on **Connect**
-- It should show you the new folder you created.
-- Open it.
+- It should show you the NadekoBot folder which was created by git earlier
+- Open that folder, then open the `src` folder, followed by another `NadekoBot` folder and you should see `credentials_example.json` here
 
 ####Renaming Credentials.json
 
 - Copy the `credentials_example.json` to desktop
-- EDIT it as it is guided here: [Setting up Credentials.json](Windows Guide.md#setting-up-credentialsjson-file)
-- Read here how to [Create DiscordBot application](https://github.com/miraai/NadekoBot/blob/dev/docs/guides/Windows%20Guide.md#creating-discordbot-application)
+- EDIT it as it is guided here: [Setting up Credentials.json](http://nadekobot.readthedocs.io/en/1.0/guides/Windows%20Guide/#setting-up-credentialsjson-file)
+- Read here how to [create a DiscordBot application](http://nadekobot.readthedocs.io/en/1.0/guides/Windows%20Guide/#creating-discordbot-application)
 - Rename it to `credentials.json` and paste/put it back in the folder. `(Yes, using CyberDuck)`
 - You should see two files `credentials_example.json` and `credentials.json`
-- Also if you already have nadeko setup and have `credentials.json`, `config.json`, `nadekobot.sqlite`, and `"permissions" folder`, you can just copy and paste it to the Droplets folder using CyberDuck.
+- Also if you already have nadeko setup and have `credentials.json` and `NadekoBot.db`, you can just copy and paste it to the Droplets folder using CyberDuck.
 
 ####Running NadekoBot
 
@@ -205,16 +167,16 @@ Type/ Copy and hit **Enter**.
 **^this will create a new session named “nadeko”** `(you can replace “nadeko” with anything you prefer and remember 
 its your session name) so you can run the bot in background without having to keep running PuTTY in the background.`
 
-`cd nadeko`
+`cd NadekoBot/src/NadekoBot/`
 
 **20)**
-`mono NadekoBot.exe`
+`dotnet run --configuration Release`
 
 **CHECK THE BOT IN DISCORD, IF EVERYTHING IS WORKING**
 
 ####Setting up Nadeko Music
 
-For how to set up Nadeko for music and Google API Keys, follow [Setting up NadekoBot for Music](Windows Guide.md#setting-up-nadekobot-for-music)
+For how to set up Nadeko for music and Google API Keys, follow [Setting up NadekoBot for Music](http://nadekobot.readthedocs.io/en/1.0/guides/Windows%20Guide/#setting-up-nadekobot-for-music)
 
 Now time to **move bot to background** and to do that, press **CTRL+B+D** (this will detach the nadeko session using TMUX), and you can finally close PuTTY now.
 
@@ -233,23 +195,12 @@ Open **PuTTY** and login as you have before, type `reboot` and hit Enter.
 
 ####Updating Nadeko
 
-**FOLLOW THESE STEPS SERIALLY**
-
-- **-16**
-- **-17**
-- **-18**
-- **-19**
-- **-20**
+- Make sure the bot is **not** running
+- Connect to the terminal
+- `cd NadekoBot`
+- `git init && git pull`
+- Run the bot again as normal, and you've updated!
 
 HIT **CTRL+B+D** and close **PuTTY**
 
 `IF YOU FACE ANY TROUBLE ANYWHERE IN THE GUIDE JUST FIND US IN NADEKO'S DISCORD SERVER`
-
-[PuTTY]: http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html
-[CyberDuck]: https://cyberduck.io
-[Linux Setup Video]: https://www.youtube.com/watch?v=icV4_WPqPQk&feature=youtu.be
-[Releases]: https://github.com/Kwoth/NadekoBot/releases
-[Readme]: https://github.com/Kwoth/NadekoBot/blob/master/README.md
-[FFMPEG Help Guide]: http://www.faqforge.com/linux/how-to-install-ffmpeg-on-ubuntu-14-04/
-[Mono Source]: http://www.mono-project.com/docs/getting-started/install/linux/
-[DigitalOcean]: http://m.do.co/c/46b4d3d44795/
