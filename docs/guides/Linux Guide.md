@@ -129,7 +129,7 @@ sudo apt-get update && sudo apt-get install ffmpeg -y`
 - Read here how to [create a DiscordBot application](http://nadekobot.readthedocs.io/en/1.0/guides/Windows%20Guide/#creating-discordbot-application)
 - Rename it to `credentials.json` and paste/put it back in the folder. `(Yes, using CyberDuck)`
 - You should see two files `credentials_example.json` and `credentials.json`
-- Also if you already have nadeko setup and have `credentials.json` and `NadekoBot.db`, you can just copy and paste it to the Droplets folder using CyberDuck.
+- Also if you already have nadeko setup and have `credentials.json` and `NadekoBot.db`, you can just copy and paste the `credentials.json` to `NadekoBot/src/NadekoBot` and `NadekoBot.db` to `NadekoBot/src/NadekoBot/bin/Release/netcoreapp1.0/data` using CyberDuck.
 
 ####Running NadekoBot
 
