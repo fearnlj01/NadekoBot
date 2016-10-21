@@ -18,19 +18,20 @@ If you entered your Droplets IP address correctly, it should show **login as:** 
 - It should then, ask for password, type the `root password` you have received in your **email address registered with Digital Ocean**, then hit Enter.
 
 *(as you are running it for the first time, it will most likely to ask you to change your root password, for that, type the "password you received through email", hit Enter, enter a "new password", hit Enter and confirm that "new password" again.*
-**SAVE that new password somewhere safe not just in mind**. After you done that, you are ready to write commands.
+**SAVE that new password somewhere safe, not just in your mind**. After you've done that, you are ready to write commands.
 
-**Copy and just paste** using **mouse right-click** (it should paste automatically)
+**Copy the messages as normal, and just paste** by using **mouse right-click** (it should paste automatically)
 
-####Installing git
+####Installing git and dotnet
 **1)**
 `sudo apt-get install git -y`
 
 Note if the command is not being initiated, hit **Enter**
 
-####Installing dotnet
-Go to [this link](https://www.microsoft.com/net/core#ubuntu) provided by microsoft for instructions on how to get the most up to date version of the dotnet core sdk - make sure that you're on the correct page for your distribution of linux!  
-We'll go over the steps here for ubuntu 16.04 anyway, one of the more common distributions of linux, accurate as of 16/10/2016
+Go to [this link](https://www.microsoft.com/net/core#ubuntu) provided by microsoft for instructions on how to get the most up to date version of the dotnet core sdk!  
+Make sure that you're on the correct page for your distribution of linux as the guides are different for the various distributions  
+
+We'll go over the steps here for Ubuntu 16.04 anyway (these will **only** work on Ubuntu 16.04), accurate as of 16/10/2016
 
 **2)**
 ```
@@ -38,37 +39,25 @@ sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotne
 
 sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
 
-sudo apt-get update
-
-sudo apt-get install dotnet-dev-1.0.0-preview2-003131 -y
+sudo apt-get update && sudo apt-get install dotnet-dev-1.0.0-preview2-003131 -y
 ```
 
-####Installing Opus Voice Codec
+####Installing Opus Voice Codec and libsodium
 **3)**
-`sudo apt-get install libopus0 opus-tools -y`
-
-**4)**
-`sudo apt-get install libopus-dev -y`
-
-####Installing libsodium
-**5)**
-`sudo apt-get install libsodium-dev -y`
+`sudo apt-get install libopus0 opus-tools libopus-dev libsodium-dev -y`
 
 ####FFMPEG
-
-**6)**
+**4)**
 `apt-get install ffmpeg -y`
 
 NOTE: if its "not installing" then, follow the guide here: [FFMPEG Help Guide](http://www.faqforge.com/linux/how-to-install-ffmpeg-on-ubuntu-14-04/)
 
-**If you are running UBUNTU 14.04, you must run these first:**
-
+**If you are running UBUNTU 14.04, you must run these first:**  
 ```
 sudo add-apt-repository ppa:mc3man/trusty-media
 sudo apt-get update
 sudo apt-get dist-upgrade
 ```
-
 *Before executing* `sudo apt-get install ffmpeg`
 
 **If you are running Debian 8 Jessie, please, follow these steps:**
@@ -85,56 +74,43 @@ sudo apt-get update && sudo apt-get install ffmpeg -y`
 
 ####Uncomplicated Firewall UFW
 
-**7)**
+**5)**
 `apt-get install ufw`
 
-**it is most likely to have it already installed so if you see it is already installed, check with following command, and/or enable it**
+**It is likely to have been pre-installed so if you see that it is installed, check it works with the following command, and/or enable it**
 
-**8)**
+**6)**
 `ufw status`
 
-**9)**
+**7)**
 `ufw enable`
 
-**Type** `y` **hit Enter**
+**Type** `y` ** and hit Enter**
 
-**10)**
+**8)**
 `sudo ufw allow ssh`
 
 ####Installing TMUX
-**11)**
-`apt-get install tmux -y`
+**9)**
+`sudo apt-get install tmux -y`
 
 ####Getting NadekoBot
 
-**12)**
-`git clone -b 1.0 --recursive https://github.com/Kwoth/NadekoBot.git
+**10)**
+`git clone -b 1.0 --recursive https://github.com/Kwoth/NadekoBot.git`
 
 ####Building NadekoBot
+**11)** `cd /NadekoBot/discord.net/src/Discord.Net`  
+`dotnet restore && dotnet build --configuration Release`
+
+**12)**
+`cd ../Discord.Net.Commands/ && dotnet restore && dotnet build --configuration Release`
+
 **13)**
-`cd /NadekoBot/discord.net/src/Discord.Net`
+`cd ../../../src/NadekoBot/ && dotnet restore && dotnet build --configuration Release`
 
-`dotnet restore && dotnet build --configuration Release`
+####Setting up NadekoBot 
 
-**14)**
-`cd ../Discord.Net.Commands/`
-
-`dotnet restore && dotnet build --configuration Release`
-
-**15)**
-`cd ../../../src/NadekoBot/`
-
-`dotnet restore && dotnet build --configuration Release`
-
-**16)**
-`sudo cp ./bin/Release/netcoreapp1.0/libs/* ./bin/Release/netcoreapp1.0/data/`
-
-####Setting up NadekoBot
-
-**17)**
-`dotnet run --configuration Release`
-
-This will generate a copy of `credentials_example.json` to be used below 
 - Open **CyberDuck**
 - Click on **Open Connection** (top-left corner), a new window should appear.
 - You should see **FTP (File Transfer Protocol)** in drop-down.
@@ -159,17 +135,14 @@ This will generate a copy of `credentials_example.json` to be used below
 
 Go back to **PuTTY**, `(hope its still running xD)`
 
-**19)**
+**14)**
 Type/ Copy and hit **Enter**.
 
-`tmux new -s nadeko`
+`tmux new -s nadeko`  
+`cd NadekoBot/src/NadekoBot/`  
+**^this will create a new session named “nadeko”** *(you can replace “nadeko” with anything you prefer and remember its your session name)* so you can run the bot in background without having to keep running PuTTY in the background.
 
-**^this will create a new session named “nadeko”** `(you can replace “nadeko” with anything you prefer and remember 
-its your session name) so you can run the bot in background without having to keep running PuTTY in the background.`
-
-`cd NadekoBot/src/NadekoBot/`
-
-**20)**
+**15)**
 `dotnet run --configuration Release`
 
 **CHECK THE BOT IN DISCORD, IF EVERYTHING IS WORKING**
@@ -180,15 +153,16 @@ For how to set up Nadeko for music and Google API Keys, follow [Setting up Nadek
 
 Now time to **move bot to background** and to do that, press **CTRL+B+D** (this will detach the nadeko session using TMUX), and you can finally close PuTTY now.
 
-Copy your CLIENT ID (that's in the same Developer page where you brought your token) and replace `12345678` in this link: `https://discordapp.com/oauth2/authorize?client_id=12345678&scope=bot&permissions=66186303` with it. Go to that link and you will be able to add your bot to your server.
+Copy your CLIENT ID (In the same Developer page where you got your token!) and replace `12345678` in this link: `https://discordapp.com/oauth2/authorize?client_id=12345678&scope=bot&permissions=66186303` with it.
+  Go to that link and you will be able to add your bot to your server.
 
 **NOW YOU HAVE YOUR OWN NADEKO BOT** `Thanks to Kwoth <3`
 
 ####Some more Info (just in case)
 
--If you want to **see the sessions** after logging back again, type `tmux ls`, and that will give you the list of sessions running.
--If you want to **switch to/ see that session**, type `tmux a -t nadeko` (**nadeko** is the name of the session we created before so, replace **“nadeko”** with the session name you created.)
--If you want to **kill** NadekoBot **session**, type `tmux kill-session -t nadeko`
+- If you want to **see the sessions** after logging back again, type `tmux ls`, and that will give you the list of sessions running.
+- If you want to **switch to/ see that session**, type `tmux a -t nadeko` (**nadeko** is the name of the session we created before so, replace **“nadeko”** with the session name you created.)
+- If you want to **kill** NadekoBot **session**, type `tmux kill-session -t nadeko`
 
 ####Restarting Nadeko with the Server
 Open **PuTTY** and login as you have before, type `reboot` and hit Enter.
@@ -203,4 +177,4 @@ Open **PuTTY** and login as you have before, type `reboot` and hit Enter.
 
 HIT **CTRL+B+D** and close **PuTTY**
 
-`IF YOU FACE ANY TROUBLE ANYWHERE IN THE GUIDE JUST FIND US IN NADEKO'S DISCORD SERVER`
+*IF YOU FACE ANY TROUBLE ANYWHERE IN THE GUIDE JUST FIND US IN [NADEKO'S DISCORD SERVER](https://discord.gg/0ehQwTK2RBjAxzEY)*
